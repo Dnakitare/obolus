@@ -1,10 +1,12 @@
 const express = require('express');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const sqlite3 = require('sqlite3').verbose();
 const app = express();
 
+app.use(cors());
 app.use(bodyParser.json());
 
 const db = new sqlite3.Database(':memory:');
@@ -19,7 +21,7 @@ db.serialize(() => {
 
 // Authenitcation Middleware
 const authenticate = (req, res, next) => {
-  const token = req.headers['authorization'].split(' ')[1];
+  const token = req.headers['authorization']?.split(' ')[1];
   jwt.verify(token, 'secret_key', (err, user) => {
     if (err) return res.sendStatus(403);
     req.user = user;
