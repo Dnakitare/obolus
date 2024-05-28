@@ -35,7 +35,6 @@ app.post('/api/register', (req, res) => {
   const hashedPassword = bcrypt.hashSync(password, 10);
   db.run("INSERT INTO users (username, password) VALUES (?, ?)", [username, hashedPassword], (err) => {
     if (err) return res.sendStatus(500);
-    console.log(username);
     res.json({ id:this.lastID });
   });
 });
@@ -46,7 +45,6 @@ app.post('/api/login', (req, res) => {
   db.get("SELECT * FROM users WHERE username = ?", [username], (err, user) => {
     if (err || !user) return res.sendStatus(401);
     if (!bcrypt.compareSync(password, user.password)) return res.sendStatus(401);
-    console.log(user);
     const token = jwt.sign({ id: user.id }, 'secret_key');
     res.json({ token });
   });
