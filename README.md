@@ -9,7 +9,6 @@ Obolus is a simple and intuitive expense tracker designed specifically for freel
 - Categorize expenses for better organization
 - Generate reports for tax filing (Under constuction)
 - User-friendly interface
-- Secure and private
 
 ## Installation
 1. Clone the repository:
