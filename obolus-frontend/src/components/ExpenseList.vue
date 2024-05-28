@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-2xl mx-auto mt-10">
+  <div class="mx-auto mt-10">
     <h2 class="text-3xl font-bold mb-5 text-center">Expenses</h2>
     <table class="min-w-full bg-white">
       <thead>
@@ -19,6 +19,9 @@
         </tr>
       </tbody>
     </table>
+    <div class="flex justify-center">
+      <button @click="$emit('openExpenseForm')" type="submit" class="m-4 bg-green-500 text-white hover:bg-green-700 py-2 px-4 font-bold rounded-full">Add Expense</button>
+    </div>
   </div>
 </template>
 

@@ -22,7 +22,10 @@
         <label class="block text-sm font-bold mb-2">Description</label>
         <input v-model="description" type="text" class="w-full p-2 border border-gray-300 rounded"/>
       </div>
-      <button type="submit" class="w-full bg-green-500 text-white p-2 rounded hover:bg-green-700">Add Income</button>
+      <div class="flex justify-between">
+        <button @click="$emit('close')" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">Close</button>
+        <button type="submit" class="bg-blue-500 text-white hover:bg-blue-700 py-2 px-4 font-bold rounded-full">Add Income</button>
+      </div>
     </form>
   </div>
 </template>
@@ -48,6 +51,7 @@ export default {
         description: this.description
       }).then(response => {
         console.log(response.data);
+        this.$emit('close')
       }).catch(error => {
         console.error(error);
       });

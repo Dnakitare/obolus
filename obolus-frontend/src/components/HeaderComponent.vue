@@ -3,7 +3,6 @@
     <div class="container mx-auto flex justify-between items-center">
       <h1 class="text-2xl font-bold">Obolus</h1>
       <nav>
-        <router-link to="/dashboard" class="mr-4">Dashboard</router-link>
         <router-link to="/login" @click.native="logout">Logout</router-link>
       </nav>
     </div>
