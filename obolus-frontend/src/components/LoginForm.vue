@@ -1,6 +1,10 @@
 <template>
   <div class="max-w-md mx-auto pt-10">
-    <h2 class="text-3xl font-bold mb-5 text-center">Login</h2>
+    <div class="flex justify-center">
+      <img src="/images/obolus-logo.png" alt="Logo" class="w-52">
+    </div>
+    <h1 id="logo-label" class="text-7xl font-bold text-center mb-2">Obolus</h1>
+    <p class="text-lg font-bold text-center mb-4">An expense tracker</p>
     <form @submit.prevent="login">
       <div class="mb-4">
         <label class="block text-sm font-bold mb-2">Username</label>
