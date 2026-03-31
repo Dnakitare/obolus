@@ -8,7 +8,7 @@
     </div>
 
     <!-- Filters -->
-    <div class="bg-white rounded-xl shadow-sm border p-4 mb-4 flex flex-wrap gap-3 items-end">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-4 flex flex-wrap gap-3 items-end">
       <div>
         <label class="block text-xs text-gray-500 mb-1">Type</label>
         <select v-model="localFilters.type" class="px-3 py-2 border rounded-lg text-sm" @change="applyFilters">
@@ -41,7 +41,7 @@
     <LoadingSpinner v-if="store.loading" />
 
     <!-- Table -->
-    <div v-else class="bg-white rounded-xl shadow-sm border overflow-hidden">
+    <div v-else class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
       <table class="w-full">
         <thead class="bg-gray-50 border-b">
           <tr>
@@ -74,7 +74,11 @@
             </td>
           </tr>
           <tr v-if="!store.transactions.length">
-            <td colspan="5" class="text-center py-8 text-gray-400">No transactions found</td>
+            <td colspan="5" class="text-center py-16">
+              <div class="text-4xl mb-3">📭</div>
+              <p class="text-gray-500 font-medium">No transactions yet</p>
+              <p class="text-gray-400 text-sm mt-1">Click "Add Transaction" to get started</p>
+            </td>
           </tr>
         </tbody>
       </table>

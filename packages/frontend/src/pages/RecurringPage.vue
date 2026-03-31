@@ -35,7 +35,11 @@
             </td>
           </tr>
           <tr v-if="!rules.length">
-            <td colspan="6" class="text-center py-8 text-gray-400">No recurring rules</td>
+            <td colspan="6" class="text-center py-16">
+              <div class="text-4xl mb-3">🔄</div>
+              <p class="text-gray-500 font-medium">No recurring rules</p>
+              <p class="text-gray-400 text-sm mt-1">Automate your regular income and expenses</p>
+            </td>
           </tr>
         </tbody>
       </table>

@@ -33,8 +33,10 @@
         </div>
       </div>
 
-      <div v-if="!budgets.length" class="col-span-full text-center py-12 text-gray-400">
-        No budgets yet. Create one to track spending.
+      <div v-if="!budgets.length" class="col-span-full text-center py-16">
+        <div class="text-5xl mb-3">🎯</div>
+        <p class="text-gray-500 font-medium text-lg">No budgets yet</p>
+        <p class="text-gray-400 text-sm mt-1">Create a budget to track spending against your goals</p>
       </div>
     </div>
 
