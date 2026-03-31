@@ -1,0 +1,137 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              Int       @id @default(autoincrement())
+  email           String    @unique
+  passwordHash    String
+  displayName     String
+  defaultCurrency String    @default("USD")
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  transactions   Transaction[]
+  categories     Category[]
+  budgets        Budget[]
+  recurringRules RecurringRule[]
+  refreshTokens  RefreshToken[]
+}
+
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([token])
+  @@index([userId])
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String
+  type      String    // "income" | "expense"
+  icon      String?
+  color     String?
+  userId    Int
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  isDefault Boolean   @default(false)
+  createdAt DateTime  @default(now())
+
+  transactions Transaction[]
+  budgets      Budget[]
+
+  @@unique([name, userId, type])
+  @@index([userId])
+}
+
+model Transaction {
+  id              Int       @id @default(autoincrement())
+  type            String    // "income" | "expense"
+  amount          Float
+  currency        String    @default("USD")
+  amountUSD       Float
+  date            DateTime
+  description     String
+  notes           String?
+  categoryId      Int
+  category        Category  @relation(fields: [categoryId], references: [id])
+  userId          Int
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recurringRuleId Int?
+  recurringRule   RecurringRule? @relation(fields: [recurringRuleId], references: [id], onDelete: SetNull)
+  isTaxDeductible Boolean   @default(false)
+  receiptPath     String?
+  receiptMimeType String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([userId, date])
+  @@index([userId, type])
+  @@index([userId, categoryId])
+  @@index([date])
+}
+
+model Budget {
+  id         Int       @id @default(autoincrement())
+  name       String
+  amount     Float
+  currency   String    @default("USD")
+  period     String    // "monthly" | "quarterly" | "yearly"
+  categoryId Int
+  category   Category  @relation(fields: [categoryId], references: [id])
+  userId     Int
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  startDate  DateTime
+  endDate    DateTime?
+  isActive   Boolean   @default(true)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([userId, categoryId])
+}
+
+model RecurringRule {
+  id          Int       @id @default(autoincrement())
+  type        String    // "income" | "expense"
+  amount      Float
+  currency    String    @default("USD")
+  description String
+  categoryId  Int
+  frequency   String    // "daily" | "weekly" | "biweekly" | "monthly" | "quarterly" | "yearly"
+  dayOfMonth  Int?
+  dayOfWeek   Int?
+  nextRunDate DateTime
+  lastRunDate DateTime?
+  endDate     DateTime?
+  isActive    Boolean   @default(true)
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  transactions Transaction[]
+
+  @@index([userId])
+  @@index([nextRunDate, isActive])
+}
+
+model ExchangeRate {
+  id           Int      @id @default(autoincrement())
+  fromCurrency String
+  toCurrency   String
+  rate         Float
+  date         DateTime
+
+  @@unique([fromCurrency, toCurrency, date])
+  @@index([fromCurrency, toCurrency])
+}

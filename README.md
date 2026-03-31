@@ -1,36 +1,110 @@
 # Obolus
-An expense tracker
 
-## Description
-Obolus is a simple and intuitive expense tracker designed specifically for freelancers. It helps you keep track of your income and expenses, manage your financial records, and (eventually) generate reports for tax purposes.
+A best-in-class expense tracker built for freelancers. Track income and expenses, manage budgets, generate tax reports, and stay on top of your finances.
 
 ## Features
-- Track income and expenses
-- Categorize expenses for better organization
-- Generate reports for tax filing (Under constuction)
-- User-friendly interface
 
-## Installation
-1. Clone the repository:
-  ```bash
-  git clone https://github.com/dnakitare/obolus.git
-  ```
-2. Install the required dependencies:
-  ```bash
-  npm install
-  ```
+- **Transaction Management** — Full CRUD for income and expenses with filtering, sorting, search, and pagination
+- **Dashboard** — Summary cards, income vs expense trend charts, category breakdown doughnut chart, budget progress bars
+- **Budget Tracking** — Per-category budgets with configurable periods (monthly, quarterly, yearly) and real-time warnings at 80%/100% thresholds
+- **Recurring Transactions** — Automated transaction creation on configurable schedules (daily to yearly)
+- **Multi-Currency** — 30+ currencies with live exchange rates from the ECB via frankfurter.app
+- **Tax Reports** — Annual tax summary with deductible expense breakdown, quarterly view, and CSV/PDF export
+- **Receipt Uploads** — Attach JPEG, PNG, WebP, or PDF receipts to any transaction
+- **Settings** — Profile management, default currency, password change
 
-## Usage
-1. Start the application:
-  ```bash
-  npm start
-  ```
-2. Open your web browser and navigate to `http://localhost:3000`.
-3. Sign up or log in to your account.
-4. Start tracking your income and expenses.
+## Tech Stack
 
-## Contributing
-Contributions are welcome! If you have any ideas, suggestions, or bug reports, please open an issue or submit a pull request.
+| Layer | Technology |
+|-------|-----------|
+| Backend | Express 4, TypeScript, Prisma ORM, SQLite |
+| Frontend | Vue 3 (Composition API), TypeScript, Pinia, Tailwind CSS, Chart.js |
+| Auth | JWT access + refresh tokens with rotation, bcrypt |
+| Validation | Zod (backend), HTML5 + client-side (frontend) |
+| Testing | Vitest, Supertest, Vue Test Utils |
+| Infrastructure | Docker Compose, GitHub Actions CI |
+
+## Quick Start
+
+### Prerequisites
+- Node.js 20+
+- npm 9+
+
+### Development
+
+```bash
+# Clone and install
+git clone https://github.com/dnakitare/obolus.git
+cd obolus
+
+# Backend setup
+cd packages/backend
+cp .env.example .env
+npm install
+npx prisma generate
+npx prisma migrate dev
+npm run db:seed    # Creates demo user: demo@obolus.dev / password123
+npm run dev        # Starts on http://localhost:3000
+
+# Frontend setup (new terminal)
+cd packages/frontend
+npm install
+npm run dev        # Starts on http://localhost:5173
+```
+
+### Docker
+
+```bash
+docker compose up --build
+# Frontend: http://localhost:8080
+# Backend API: http://localhost:3000
+```
+
+## API
+
+All endpoints are prefixed with `/api/v1`. Authenticated routes require `Authorization: Bearer <token>`.
+
+| Resource | Endpoints |
+|----------|-----------|
+| Auth | `POST /auth/register, /auth/login, /auth/refresh, /auth/logout` `GET /auth/me` `PATCH /auth/me, /auth/password` |
+| Transactions | `GET /transactions` `GET /transactions/:id` `POST /transactions` `PATCH /transactions/:id` `DELETE /transactions/:id` |
+| Categories | `GET /categories` `POST /categories` `PATCH /categories/:id` `DELETE /categories/:id` |
+| Budgets | `GET /budgets` `POST /budgets` `PATCH /budgets/:id` `DELETE /budgets/:id` |
+| Recurring | `GET /recurring` `POST /recurring` `POST /recurring/process` `PATCH /recurring/:id` `DELETE /recurring/:id` |
+| Dashboard | `GET /dashboard/summary, /dashboard/trends, /dashboard/by-category, /dashboard/budget-status` |
+| Reports | `GET /reports/tax-summary, /reports/export/csv, /reports/export/pdf` |
+| Receipts | `POST /transactions/:id/receipt` `GET /transactions/:id/receipt` `DELETE /transactions/:id/receipt` |
+| Currencies | `GET /currencies` `GET /currencies/rate` |
+
+## Project Structure
+
+```
+obolus/
+├── packages/
+│   ├── backend/          # Express API
+│   │   ├── prisma/       # Schema, migrations, seed
+│   │   └── src/
+│   │       ├── config/   # Zod-validated env
+│   │       ├── middleware/# Auth, validation, rate limiting, uploads, errors
+│   │       ├── routes/   # Express routers
+│   │       ├── controllers/
+│   │       ├── services/ # Business logic
+│   │       ├── schemas/  # Zod input schemas
+│   │       ├── lib/      # Prisma client, JWT helpers, PDF generator
+│   │       └── jobs/     # Recurring transaction processor (node-cron)
+│   └── frontend/         # Vue 3 SPA
+│       └── src/
+│           ├── pages/    # Route-level components
+│           ├── components/# UI, layout, feature components
+│           ├── stores/   # Pinia state management
+│           ├── api/      # Axios API modules
+│           ├── composables/# Reusable logic (currency, toasts)
+│           └── types/    # TypeScript interfaces
+├── docker/               # Dockerfiles, nginx config
+├── .github/workflows/    # CI pipeline
+└── docker-compose.yml
+```
 
 ## License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
+
+MIT
