@@ -11,3 +11,5 @@ coverage/
 *.log
 .vscode/
 .idea/
+test.db
+test.db-journal
