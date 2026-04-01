@@ -1,16 +1,21 @@
 <template>
   <div>
-    <div class="flex items-center justify-between mb-6">
-      <h1 class="text-2xl font-bold text-gray-800">Reports</h1>
+    <div class="flex items-center justify-between mb-8">
+      <h1 class="page-title">Reports</h1>
       <div class="flex gap-2">
-        <button class="px-4 py-2 border rounded-lg text-sm hover:bg-gray-50" @click="exportCSV">Export CSV</button>
-        <button class="px-4 py-2 border rounded-lg text-sm hover:bg-gray-50" @click="exportPDF">Export PDF</button>
+        <button class="btn-outline" @click="exportCSV">
+          <svg class="w-4 h-4 inline -mt-0.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+          CSV
+        </button>
+        <button class="btn-outline" @click="exportPDF">
+          <svg class="w-4 h-4 inline -mt-0.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+          PDF
+        </button>
       </div>
     </div>
 
-    <!-- Year selector -->
     <div class="mb-6">
-      <select v-model="year" class="px-3 py-2 border rounded-lg text-sm" @change="fetchTaxSummary">
+      <select v-model="year" class="select-field" @change="fetchTaxSummary">
         <option v-for="y in years" :key="y" :value="y">{{ y }}</option>
       </select>
     </div>
@@ -19,68 +24,80 @@
 
     <template v-else-if="taxSummary">
       <!-- Summary Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div class="bg-white rounded-xl shadow-sm border p-5">
-          <p class="text-sm text-gray-500">Total Income</p>
-          <p class="text-2xl font-bold text-green-600">${{ taxSummary.totalIncome.toFixed(2) }}</p>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+        <div class="card p-5 relative overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent" />
+          <div class="relative">
+            <p class="text-xs text-gray-400 font-semibold uppercase tracking-wider mb-1">Total Income</p>
+            <p class="text-2xl font-extrabold text-emerald-600">${{ taxSummary.totalIncome.toFixed(2) }}</p>
+          </div>
         </div>
-        <div class="bg-white rounded-xl shadow-sm border p-5">
-          <p class="text-sm text-gray-500">Deductible Expenses</p>
-          <p class="text-2xl font-bold text-blue-600">${{ taxSummary.totalDeductible.toFixed(2) }}</p>
+        <div class="card p-5 relative overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-transparent" />
+          <div class="relative">
+            <p class="text-xs text-gray-400 font-semibold uppercase tracking-wider mb-1">Deductible Expenses</p>
+            <p class="text-2xl font-extrabold text-primary-600">${{ taxSummary.totalDeductible.toFixed(2) }}</p>
+          </div>
         </div>
-        <div class="bg-white rounded-xl shadow-sm border p-5">
-          <p class="text-sm text-gray-500">Est. Taxable Income</p>
-          <p class="text-2xl font-bold text-gray-800">${{ (taxSummary.totalIncome - taxSummary.totalDeductible).toFixed(2) }}</p>
+        <div class="card p-5 relative overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-br from-violet-500/5 to-transparent" />
+          <div class="relative">
+            <p class="text-xs text-gray-400 font-semibold uppercase tracking-wider mb-1">Est. Taxable Income</p>
+            <p class="text-2xl font-extrabold text-violet-600">${{ (taxSummary.totalIncome - taxSummary.totalDeductible).toFixed(2) }}</p>
+          </div>
         </div>
       </div>
 
       <!-- Deductible by Category -->
-      <div class="bg-white rounded-xl shadow-sm border p-5 mb-6">
-        <h2 class="text-lg font-semibold mb-4">Deductible Expenses by Category</h2>
+      <div class="card p-6 mb-6">
+        <h2 class="text-base font-bold text-gray-800 mb-4">Deductible Expenses by Category</h2>
         <table class="w-full">
-          <thead class="border-b">
+          <thead class="border-b border-gray-100">
             <tr>
-              <th class="text-left py-2 text-sm text-gray-500">Category</th>
-              <th class="text-right py-2 text-sm text-gray-500">Amount</th>
-              <th class="text-right py-2 text-sm text-gray-500">Count</th>
+              <th class="text-left py-2.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">Category</th>
+              <th class="text-right py-2.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">Amount</th>
+              <th class="text-right py-2.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">Count</th>
             </tr>
           </thead>
-          <tbody class="divide-y">
-            <tr v-for="cat in taxSummary.deductibleByCategory" :key="cat.categoryName">
-              <td class="py-2 text-sm">{{ cat.categoryName }}</td>
-              <td class="py-2 text-sm text-right font-medium">${{ cat.total.toFixed(2) }}</td>
-              <td class="py-2 text-sm text-right text-gray-500">{{ cat.count }}</td>
+          <tbody class="divide-y divide-gray-50">
+            <tr v-for="cat in taxSummary.deductibleByCategory" :key="cat.categoryName" class="hover:bg-primary-50/30 transition-colors">
+              <td class="py-3 text-sm font-medium text-gray-800">{{ cat.categoryName }}</td>
+              <td class="py-3 text-sm text-right font-bold tabular-nums">${{ cat.total.toFixed(2) }}</td>
+              <td class="py-3 text-sm text-right text-gray-400">{{ cat.count }}</td>
+            </tr>
+            <tr v-if="!taxSummary.deductibleByCategory.length">
+              <td colspan="3" class="text-center py-8 text-gray-400 text-sm">No deductible expenses this year</td>
             </tr>
           </tbody>
         </table>
       </div>
 
       <!-- Quarterly Breakdown -->
-      <div class="bg-white rounded-xl shadow-sm border p-5">
-        <h2 class="text-lg font-semibold mb-4">Quarterly Breakdown</h2>
+      <div class="card p-6">
+        <h2 class="text-base font-bold text-gray-800 mb-4">Quarterly Breakdown</h2>
         <table class="w-full">
-          <thead class="border-b">
+          <thead class="border-b border-gray-100">
             <tr>
-              <th class="text-left py-2 text-sm text-gray-500">Quarter</th>
-              <th class="text-right py-2 text-sm text-gray-500">Income</th>
-              <th class="text-right py-2 text-sm text-gray-500">Expenses</th>
-              <th class="text-right py-2 text-sm text-gray-500">Deductible</th>
-              <th class="text-right py-2 text-sm text-gray-500">Net</th>
+              <th class="text-left py-2.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">Quarter</th>
+              <th class="text-right py-2.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">Income</th>
+              <th class="text-right py-2.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">Expenses</th>
+              <th class="text-right py-2.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">Deductible</th>
+              <th class="text-right py-2.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">Net</th>
             </tr>
           </thead>
-          <tbody class="divide-y">
-            <tr v-for="q in taxSummary.quarterlyBreakdown" :key="q.quarter">
-              <td class="py-2 text-sm font-medium">{{ q.quarter }}</td>
-              <td class="py-2 text-sm text-right text-green-600">${{ q.income.toFixed(2) }}</td>
-              <td class="py-2 text-sm text-right text-red-600">${{ q.expenses.toFixed(2) }}</td>
-              <td class="py-2 text-sm text-right text-blue-600">${{ q.deductible.toFixed(2) }}</td>
-              <td class="py-2 text-sm text-right font-medium">${{ q.net.toFixed(2) }}</td>
+          <tbody class="divide-y divide-gray-50">
+            <tr v-for="q in taxSummary.quarterlyBreakdown" :key="q.quarter" class="hover:bg-primary-50/30 transition-colors">
+              <td class="py-3 text-sm font-bold text-gray-800">{{ q.quarter }}</td>
+              <td class="py-3 text-sm text-right text-emerald-600 font-semibold tabular-nums">${{ q.income.toFixed(2) }}</td>
+              <td class="py-3 text-sm text-right text-rose-600 font-semibold tabular-nums">${{ q.expenses.toFixed(2) }}</td>
+              <td class="py-3 text-sm text-right text-primary-600 font-semibold tabular-nums">${{ q.deductible.toFixed(2) }}</td>
+              <td class="py-3 text-sm text-right font-bold tabular-nums">${{ q.net.toFixed(2) }}</td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <p class="text-xs text-gray-400 mt-4 text-center">This is not tax advice. Consult your tax advisor.</p>
+      <p class="text-xs text-gray-400 mt-6 text-center font-medium">This is not tax advice. Consult your tax advisor.</p>
     </template>
   </div>
 </template>

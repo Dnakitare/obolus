@@ -1,42 +1,38 @@
 <template>
   <div class="max-w-2xl">
-    <h1 class="text-2xl font-bold text-gray-800 mb-6">Settings</h1>
+    <h1 class="page-title mb-8">Settings</h1>
 
     <!-- Profile -->
-    <div class="bg-white rounded-xl shadow-sm border p-6 mb-6">
-      <h2 class="text-lg font-semibold mb-4">Profile</h2>
+    <div class="card p-6 mb-6">
+      <h2 class="text-base font-bold text-gray-800 mb-4">Profile</h2>
       <form class="space-y-4" @submit.prevent="updateProfile">
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Display Name</label>
-          <input v-model="profile.displayName" type="text" class="w-full px-3 py-2 border rounded-lg text-sm" />
+          <label class="block text-xs text-gray-400 font-semibold uppercase tracking-wider mb-1.5">Display Name</label>
+          <input v-model="profile.displayName" type="text" class="input-field" />
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Default Currency</label>
-          <select v-model="profile.defaultCurrency" class="w-full px-3 py-2 border rounded-lg text-sm">
+          <label class="block text-xs text-gray-400 font-semibold uppercase tracking-wider mb-1.5">Default Currency</label>
+          <select v-model="profile.defaultCurrency" class="input-field">
             <option v-for="c in currencies" :key="c" :value="c">{{ c }}</option>
           </select>
         </div>
-        <button type="submit" class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 text-sm font-medium">
-          Save Changes
-        </button>
+        <button type="submit" class="btn-primary">Save Changes</button>
       </form>
     </div>
 
     <!-- Change Password -->
-    <div class="bg-white rounded-xl shadow-sm border p-6">
-      <h2 class="text-lg font-semibold mb-4">Change Password</h2>
+    <div class="card p-6">
+      <h2 class="text-base font-bold text-gray-800 mb-4">Change Password</h2>
       <form class="space-y-4" @submit.prevent="handleChangePassword">
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
-          <input v-model="passwords.current" type="password" required class="w-full px-3 py-2 border rounded-lg text-sm" />
+          <label class="block text-xs text-gray-400 font-semibold uppercase tracking-wider mb-1.5">Current Password</label>
+          <input v-model="passwords.current" type="password" required class="input-field" placeholder="Enter current password" />
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
-          <input v-model="passwords.newPw" type="password" required minlength="8" class="w-full px-3 py-2 border rounded-lg text-sm" />
+          <label class="block text-xs text-gray-400 font-semibold uppercase tracking-wider mb-1.5">New Password</label>
+          <input v-model="passwords.newPw" type="password" required minlength="8" class="input-field" placeholder="Min. 8 characters" />
         </div>
-        <button type="submit" class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 text-sm font-medium">
-          Update Password
-        </button>
+        <button type="submit" class="btn-primary">Update Password</button>
       </form>
     </div>
   </div>

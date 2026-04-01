@@ -1,43 +1,44 @@
 <template>
   <div>
-    <div class="flex items-center justify-between mb-6">
-      <h1 class="text-2xl font-bold text-gray-800">Recurring Transactions</h1>
-      <button class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 text-sm font-medium" @click="showForm = true">
-        + Add Rule
-      </button>
+    <div class="flex items-center justify-between mb-8">
+      <h1 class="page-title">Recurring Transactions</h1>
+      <button class="btn-primary" @click="showForm = true">+ Add Rule</button>
     </div>
 
     <LoadingSpinner v-if="loading" />
 
-    <div v-else class="bg-white rounded-xl shadow-sm border overflow-hidden">
+    <div v-else class="card overflow-hidden">
       <table class="w-full">
-        <thead class="bg-gray-50 border-b">
+        <thead class="bg-gray-50/80 border-b border-gray-100">
           <tr>
-            <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Description</th>
-            <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Type</th>
-            <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Frequency</th>
-            <th class="text-right px-4 py-3 text-xs font-medium text-gray-500 uppercase">Amount</th>
-            <th class="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Next Run</th>
-            <th class="text-right px-4 py-3 text-xs font-medium text-gray-500 uppercase">Actions</th>
+            <th class="text-left px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Description</th>
+            <th class="text-left px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Type</th>
+            <th class="text-left px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Frequency</th>
+            <th class="text-right px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Amount</th>
+            <th class="text-left px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Next Run</th>
+            <th class="text-right px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Actions</th>
           </tr>
         </thead>
-        <tbody class="divide-y">
-          <tr v-for="rule in rules" :key="rule.id" class="hover:bg-gray-50">
-            <td class="px-4 py-3 text-sm">{{ rule.description }}</td>
-            <td class="px-4 py-3 text-sm">
-              <span :class="rule.type === 'income' ? 'text-green-600' : 'text-red-600'">{{ rule.type }}</span>
+        <tbody class="divide-y divide-gray-50">
+          <tr v-for="rule in rules" :key="rule.id" class="hover:bg-primary-50/30 transition-colors">
+            <td class="px-4 py-3.5 text-sm font-medium text-gray-800">{{ rule.description }}</td>
+            <td class="px-4 py-3.5 text-sm">
+              <span class="text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider"
+                :class="rule.type === 'income' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'">
+                {{ rule.type }}
+              </span>
             </td>
-            <td class="px-4 py-3 text-sm capitalize">{{ rule.frequency }}</td>
-            <td class="px-4 py-3 text-sm text-right font-medium">${{ rule.amount.toFixed(2) }}</td>
-            <td class="px-4 py-3 text-sm">{{ new Date(rule.nextRunDate).toLocaleDateString() }}</td>
-            <td class="px-4 py-3 text-sm text-right">
-              <button class="text-gray-400 hover:text-red-600" @click="handleDelete(rule.id)">Delete</button>
+            <td class="px-4 py-3.5 text-sm text-gray-600 capitalize">{{ rule.frequency }}</td>
+            <td class="px-4 py-3.5 text-sm text-right font-bold tabular-nums">${{ rule.amount.toFixed(2) }}</td>
+            <td class="px-4 py-3.5 text-sm text-gray-600">{{ new Date(rule.nextRunDate).toLocaleDateString() }}</td>
+            <td class="px-4 py-3.5 text-sm text-right">
+              <button class="text-gray-400 hover:text-rose-600 transition-colors font-medium" @click="handleDelete(rule.id)">Delete</button>
             </td>
           </tr>
           <tr v-if="!rules.length">
-            <td colspan="6" class="text-center py-16">
-              <div class="text-4xl mb-3">🔄</div>
-              <p class="text-gray-500 font-medium">No recurring rules</p>
+            <td colspan="6" class="text-center py-20">
+              <div class="text-5xl mb-4 opacity-60">🔄</div>
+              <p class="text-gray-600 font-semibold text-lg">No recurring rules</p>
               <p class="text-gray-400 text-sm mt-1">Automate your regular income and expenses</p>
             </td>
           </tr>

@@ -1,41 +1,40 @@
 <template>
   <div>
-    <div class="flex items-center justify-between mb-6">
-      <h1 class="text-2xl font-bold text-gray-800">Budgets</h1>
-      <button class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 text-sm font-medium" @click="showForm = true">
-        + Create Budget
-      </button>
+    <div class="flex items-center justify-between mb-8">
+      <h1 class="page-title">Budgets</h1>
+      <button class="btn-primary" @click="showForm = true">+ Create Budget</button>
     </div>
 
     <LoadingSpinner v-if="loading" />
 
     <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      <div v-for="b in budgets" :key="b.id" class="bg-white rounded-xl shadow-sm border p-5 space-y-3">
+      <div v-for="b in budgets" :key="b.id" class="card p-5 space-y-3">
         <div class="flex items-center justify-between">
-          <h3 class="font-semibold text-gray-800">{{ b.category.icon }} {{ b.name }}</h3>
-          <span class="text-xs px-2 py-0.5 rounded-full" :class="b.isActive ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'">
+          <h3 class="font-bold text-gray-800">{{ b.category.icon }} {{ b.name }}</h3>
+          <span class="text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider"
+            :class="b.isActive ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-500'">
             {{ b.period }}
           </span>
         </div>
-        <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+        <div class="h-2.5 bg-gray-100 rounded-full overflow-hidden">
           <div
-            class="h-full rounded-full transition-all"
-            :class="b.percentUsed >= 100 ? 'bg-red-500' : b.percentUsed >= 80 ? 'bg-yellow-500' : 'bg-green-500'"
+            class="h-full rounded-full transition-all duration-500"
+            :class="b.percentUsed >= 100 ? 'bg-gradient-to-r from-rose-500 to-rose-400' : b.percentUsed >= 80 ? 'bg-gradient-to-r from-amber-500 to-amber-400' : 'bg-gradient-to-r from-emerald-500 to-emerald-400'"
             :style="{ width: `${Math.min(b.percentUsed, 100)}%` }"
           />
         </div>
-        <div class="flex justify-between text-sm text-gray-500">
-          <span>${{ b.spent.toFixed(2) }} spent</span>
-          <span>${{ b.amount.toFixed(2) }} limit</span>
+        <div class="flex justify-between text-sm">
+          <span class="text-gray-500 font-medium">${{ b.spent.toFixed(2) }} spent</span>
+          <span class="text-gray-400">${{ b.amount.toFixed(2) }} limit</span>
         </div>
-        <div class="text-right">
-          <button class="text-xs text-red-500 hover:text-red-700" @click="handleDelete(b.id)">Delete</button>
+        <div class="text-right pt-1 border-t border-gray-50">
+          <button class="text-xs text-gray-400 hover:text-rose-600 transition-colors font-medium" @click="handleDelete(b.id)">Delete</button>
         </div>
       </div>
 
-      <div v-if="!budgets.length" class="col-span-full text-center py-16">
-        <div class="text-5xl mb-3">🎯</div>
-        <p class="text-gray-500 font-medium text-lg">No budgets yet</p>
+      <div v-if="!budgets.length" class="col-span-full text-center py-20">
+        <div class="text-5xl mb-4 opacity-60">🎯</div>
+        <p class="text-gray-600 font-semibold text-lg">No budgets yet</p>
         <p class="text-gray-400 text-sm mt-1">Create a budget to track spending against your goals</p>
       </div>
     </div>

@@ -1,17 +1,17 @@
 <template>
   <form class="space-y-4" @submit.prevent="handleSubmit">
     <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
-      <input v-model="form.name" type="text" required class="w-full px-3 py-2 border rounded-lg text-sm" />
+      <label class="block text-xs text-gray-400 font-semibold uppercase tracking-wider mb-1.5">Name</label>
+      <input v-model="form.name" type="text" required class="input-field" placeholder="e.g. Monthly Travel Budget" />
     </div>
     <div class="grid grid-cols-2 gap-4">
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Amount</label>
-        <input v-model.number="form.amount" type="number" step="0.01" min="1" required class="w-full px-3 py-2 border rounded-lg text-sm" />
+        <label class="block text-xs text-gray-400 font-semibold uppercase tracking-wider mb-1.5">Amount</label>
+        <input v-model.number="form.amount" type="number" step="0.01" min="1" required class="input-field" placeholder="0.00" />
       </div>
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Period</label>
-        <select v-model="form.period" required class="w-full px-3 py-2 border rounded-lg text-sm">
+        <label class="block text-xs text-gray-400 font-semibold uppercase tracking-wider mb-1.5">Period</label>
+        <select v-model="form.period" required class="input-field">
           <option value="monthly">Monthly</option>
           <option value="quarterly">Quarterly</option>
           <option value="yearly">Yearly</option>
@@ -19,17 +19,16 @@
       </div>
     </div>
     <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Expense Category</label>
-      <select v-model="form.categoryId" required class="w-full px-3 py-2 border rounded-lg text-sm">
+      <label class="block text-xs text-gray-400 font-semibold uppercase tracking-wider mb-1.5">Expense Category</label>
+      <select v-model="form.categoryId" required class="input-field">
         <option v-for="cat in categories.expenseCategories" :key="cat.id" :value="cat.id">{{ cat.icon }} {{ cat.name }}</option>
       </select>
     </div>
     <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
-      <input v-model="form.startDate" type="date" required class="w-full px-3 py-2 border rounded-lg text-sm" />
+      <label class="block text-xs text-gray-400 font-semibold uppercase tracking-wider mb-1.5">Start Date</label>
+      <input v-model="form.startDate" type="date" required class="input-field" />
     </div>
-    <button type="submit" :disabled="loading"
-      class="w-full py-2 px-4 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 font-medium text-sm">
+    <button type="submit" :disabled="loading" class="btn-primary w-full justify-center">
       {{ loading ? 'Creating...' : 'Create Budget' }}
     </button>
   </form>

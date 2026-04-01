@@ -2,15 +2,15 @@
   <form class="space-y-4" @submit.prevent="handleSubmit">
     <div class="grid grid-cols-2 gap-4">
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Type</label>
-        <select v-model="form.type" required class="w-full px-3 py-2 border rounded-lg text-sm">
+        <label class="block text-xs text-gray-400 font-semibold uppercase tracking-wider mb-1.5">Type</label>
+        <select v-model="form.type" required class="input-field">
           <option value="expense">Expense</option>
           <option value="income">Income</option>
         </select>
       </div>
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Frequency</label>
-        <select v-model="form.frequency" required class="w-full px-3 py-2 border rounded-lg text-sm">
+        <label class="block text-xs text-gray-400 font-semibold uppercase tracking-wider mb-1.5">Frequency</label>
+        <select v-model="form.frequency" required class="input-field">
           <option value="daily">Daily</option>
           <option value="weekly">Weekly</option>
           <option value="biweekly">Biweekly</option>
@@ -22,26 +22,25 @@
     </div>
     <div class="grid grid-cols-2 gap-4">
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Amount</label>
-        <input v-model.number="form.amount" type="number" step="0.01" min="0.01" required class="w-full px-3 py-2 border rounded-lg text-sm" />
+        <label class="block text-xs text-gray-400 font-semibold uppercase tracking-wider mb-1.5">Amount</label>
+        <input v-model.number="form.amount" type="number" step="0.01" min="0.01" required class="input-field" placeholder="0.00" />
       </div>
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
-        <select v-model="form.categoryId" required class="w-full px-3 py-2 border rounded-lg text-sm">
+        <label class="block text-xs text-gray-400 font-semibold uppercase tracking-wider mb-1.5">Category</label>
+        <select v-model="form.categoryId" required class="input-field">
           <option v-for="cat in filteredCategories" :key="cat.id" :value="cat.id">{{ cat.icon }} {{ cat.name }}</option>
         </select>
       </div>
     </div>
     <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
-      <input v-model="form.description" type="text" required class="w-full px-3 py-2 border rounded-lg text-sm" />
+      <label class="block text-xs text-gray-400 font-semibold uppercase tracking-wider mb-1.5">Description</label>
+      <input v-model="form.description" type="text" required class="input-field" placeholder="e.g. Monthly rent" />
     </div>
     <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
-      <input v-model="form.startDate" type="date" required class="w-full px-3 py-2 border rounded-lg text-sm" />
+      <label class="block text-xs text-gray-400 font-semibold uppercase tracking-wider mb-1.5">Start Date</label>
+      <input v-model="form.startDate" type="date" required class="input-field" />
     </div>
-    <button type="submit" :disabled="loading"
-      class="w-full py-2 px-4 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 font-medium text-sm">
+    <button type="submit" :disabled="loading" class="btn-primary w-full justify-center">
       {{ loading ? 'Creating...' : 'Create Rule' }}
     </button>
   </form>
