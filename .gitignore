@@ -13,3 +13,6 @@ coverage/
 .idea/
 test.db
 test.db-journal
+*.tsbuildinfo
+packages/frontend/src/**/*.js
+packages/frontend/*.js
