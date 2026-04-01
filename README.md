@@ -2,6 +2,8 @@
 
 A best-in-class expense tracker built for freelancers. Track income and expenses, manage budgets, generate tax reports, and stay on top of your finances.
 
+![Obolus Demo](docs/obolus-demo.gif)
+
 ## Features
 
 - **Transaction Management** — Full CRUD for income and expenses with filtering, sorting, search, and pagination
