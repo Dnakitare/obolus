@@ -7,6 +7,7 @@ let toastId = 0;
 export const useUiStore = defineStore('ui', () => {
   const toasts = ref<Toast[]>([]);
   const sidebarCollapsed = ref(false);
+  const mobileMenuOpen = ref(false);
   const confirmDialog = ref<{
     show: boolean;
     message: string;
@@ -40,8 +41,17 @@ export const useUiStore = defineStore('ui', () => {
     sidebarCollapsed.value = !sidebarCollapsed.value;
   }
 
+  function toggleMobileMenu() {
+    mobileMenuOpen.value = !mobileMenuOpen.value;
+  }
+
+  function closeMobileMenu() {
+    mobileMenuOpen.value = false;
+  }
+
   return {
-    toasts, sidebarCollapsed, confirmDialog,
-    showSuccess, showError, showWarning, confirm, resolveConfirm, toggleSidebar,
+    toasts, sidebarCollapsed, mobileMenuOpen, confirmDialog,
+    showSuccess, showError, showWarning, confirm, resolveConfirm,
+    toggleSidebar, toggleMobileMenu, closeMobileMenu,
   };
 });
