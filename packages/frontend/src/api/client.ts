@@ -75,6 +75,13 @@ client.interceptors.response.use(
       }
     }
 
+    // Network error (API unreachable)
+    if (!error.response) {
+      const { useUiStore } = await import('@/stores/ui.store');
+      const ui = useUiStore();
+      ui.showError('Unable to connect to server. Please check your connection.');
+    }
+
     return Promise.reject(error);
   },
 );
